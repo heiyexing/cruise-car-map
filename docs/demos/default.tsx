@@ -8,21 +8,21 @@ const id = String(Math.random());
 
 export default () => {
   const JsonToHex = (json: any, hexId: string, lat: string, lon: string) => {
-    const HexIndexList = json.map((item: any) => {
+    const HexIdList = json.map((item: any) => {
       return {
         ...item,
-        hexIndex: latLngToCell(+item[lat], +item[lon], +item[hexId]),
+        hexId: latLngToCell(+item[lat], +item[lon], +item[hexId]),
       };
     });
 
-    const HexIndexFilter = HexIndexList.filter(
-      (item: { hexIndex: string }, index: number, arr: any[]) => {
-        return arr.findIndex((t) => t.hexIndex === item.hexIndex) === index;
+    const HexIdFilter = HexIdList.filter(
+      (item: { hexId: string }, index: number, arr: any[]) => {
+        return arr.findIndex((t) => t.hexId === item.hexId) === index;
       },
     );
 
-    const HexBoundaryList = HexIndexFilter.map((item: any) => {
-      return { ...item, hexBoundary: cellToBoundary(item.hexIndex, true) };
+    const HexBoundaryList = HexIdFilter.map((item: any) => {
+      return { ...item, hexBoundary: cellToBoundary(item.hexId, true) };
     });
 
     const features = HexBoundaryList.map((item: any) => {
