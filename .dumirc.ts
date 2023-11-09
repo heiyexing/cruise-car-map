@@ -6,4 +6,3 @@ export default defineConfig({
     name: 'cruise-car-map',
   },
 });
-``;

@@ -7,25 +7,23 @@ import { data } from './mock';
 const id = String(Math.random());
 
 export default () => {
-  const JsonToHex = (json: any, hexId: string, lat: string, lon: string) => {
-    const HexIdList = json.map((item: any) => {
-      return {
-        ...item,
-        hexId: latLngToCell(+item[lat], +item[lon], +item[hexId]),
-      };
+  const jsonToHex = (json: any, hexId: string, lat: string, lon: string) => {
+    const hexIndexList = json
+      .map((item: any) => {
+        return {
+          ...item,
+          hexIndex: latLngToCell(+item[lat], +item[lon], +item[hexId]),
+        };
+      })
+      .filter((item: { hexIndex: string }, index: number, arr: any[]) => {
+        return arr.findIndex((t) => t.hexIndex === item.hexIndex) === index;
+      });
+
+    const hexBoundaryList = hexIndexList.map((item: any) => {
+      return { ...item, hexBoundary: cellToBoundary(item.hexIndex, true) };
     });
 
-    const HexIdFilter = HexIdList.filter(
-      (item: { hexId: string }, index: number, arr: any[]) => {
-        return arr.findIndex((t) => t.hexId === item.hexId) === index;
-      },
-    );
-
-    const HexBoundaryList = HexIdFilter.map((item: any) => {
-      return { ...item, hexBoundary: cellToBoundary(item.hexId, true) };
-    });
-
-    const features = HexBoundaryList.map((item: any) => {
+    const features = hexBoundaryList.map((item: any) => {
       return polygon([item.hexBoundary], { ...item });
     });
 
@@ -44,7 +42,7 @@ export default () => {
     });
     scene.on('loaded', () => {
       const hexLayer = new PolygonLayer({})
-        .source(JsonToHex(data, 'odCnt', 'fLat', 'fLon'))
+        .source(jsonToHex(data, 'odCnt', 'fLat', 'fLon'))
         .color('count', [
           'rgb(253,204,138)',
           'rgb(252,141,89)',
@@ -60,7 +58,7 @@ export default () => {
       const lineLayer = new LineLayer({
         zIndex: 2,
       })
-        .source(JsonToHex(data, 'odCnt', 'fLat', 'fLon'))
+        .source(jsonToHex(data, 'odCnt', 'fLat', 'fLon'))
         .color('#fff')
         .size(0.8);
 
