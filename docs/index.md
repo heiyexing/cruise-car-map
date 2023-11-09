@@ -13,30 +13,29 @@ title: Hex图层
 <code src="./demos/default.tsx" compact  defaultShowCode></code>
 
 ```ts
-// json: json数据，hexId：json数据中选取作为分辨率的字段
-const jsontohex = (json: any, hexId: string) => {
-  const h3IndexList = json.map((item: any) => {
-    // item.fLat 和item.fLon 为数据中的经纬度，hexId则为转换字段，主要提供分辨率
+// json: json数据，hexId：json数据中选取作为分辨率的字段 lat lon 为数据经纬度
+const JsonToHex = (json: any, hexId: string, lat: string, lon: string) => {
+  const HexIndexList = json.map((item: any) => {
     return {
       ...item,
-      h3Index: latLngToCell(+item.fLat, +item.fLon, +item[hexId]),
+      hexIndex: latLngToCell(+item[lat], +item[lon], +item[hexId]),
     };
   });
-
-  // 过滤出相同h3Index数据的值
-  const h3IndexFilter = h3IndexList.filter(
-    (item: { h3Index: string }, index: number, arr: any[]) => {
-      return arr.findIndex((t) => t.h3Index === item.h3Index) === index;
+  // 去除相同的hexIndex数据
+  const HexIndexFilter = HexIndexList.filter(
+    (item: { hexIndex: string }, index: number, arr: any[]) => {
+      return arr.findIndex((t) => t.hexIndex === item.hexIndex) === index;
     },
   );
-  // 通过h3-js的cellToBoundary方法去解析出六边行边界经纬度数组 第二项为是否封边
-  const h3BoundaryList = h3IndexFilter.map((item: any) => {
-    return { ...item, h3Boundary: cellToBoundary(item.h3Index, true) };
+  // 通过h3-js的cellToBoundary方法去解析出六边行边界经纬度数组 第二项为是否闭合数据
+  const HexBoundaryList = HexIndexFilter.map((item: any) => {
+    return { ...item, hexBoundary: cellToBoundary(item.hexIndex, true) };
   });
   //使用turf中的polygon()方法与上一步生成的边界数据生成polygon数据
-  const polygonList = h3BoundaryList.map((item: any) => {
-    return polygon([item.h3Boundary], { ...item });
+  const features = HexBoundaryList.map((item: any) => {
+    return polygon([item.hexBoundary], { ...item });
   });
-  return polygonList;
+  // 最终使用turf中的featureCollection导出FeatureCollection数据
+  return featureCollection(features);
 };
 ```

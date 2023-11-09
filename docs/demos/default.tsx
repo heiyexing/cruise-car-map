@@ -1,5 +1,5 @@
 import { GaodeMap, LineLayer, PointLayer, PolygonLayer, Scene } from '@antv/l7';
-import { polygon } from '@turf/turf';
+import { featureCollection, polygon } from '@turf/turf';
 import { cellToBoundary, latLngToCell } from 'h3-js';
 import React, { useEffect } from 'react';
 import { data } from './mock';
@@ -7,25 +7,29 @@ import { data } from './mock';
 const id = String(Math.random());
 
 export default () => {
-  const jsontohex = (json: any, hexId: string) => {
-    const h3IndexList = json.map((item: any) => {
+  const JsonToHex = (json: any, hexId: string, lat: string, lon: string) => {
+    const HexIndexList = json.map((item: any) => {
       return {
         ...item,
-        h3Index: latLngToCell(+item.fLat, +item.fLon, +item[hexId]),
+        hexIndex: latLngToCell(+item[lat], +item[lon], +item[hexId]),
       };
     });
-    const h3IndexFilter = h3IndexList.filter(
-      (item: { h3Index: string }, index: number, arr: any[]) => {
-        return arr.findIndex((t) => t.h3Index === item.h3Index) === index;
+
+    const HexIndexFilter = HexIndexList.filter(
+      (item: { hexIndex: string }, index: number, arr: any[]) => {
+        return arr.findIndex((t) => t.hexIndex === item.hexIndex) === index;
       },
     );
-    const h3BoundaryList = h3IndexFilter.map((item: any) => {
-      return { ...item, h3Boundary: cellToBoundary(item.h3Index, true) };
+
+    const HexBoundaryList = HexIndexFilter.map((item: any) => {
+      return { ...item, hexBoundary: cellToBoundary(item.hexIndex, true) };
     });
-    const polygonList = h3BoundaryList.map((item: any) => {
-      return polygon([item.h3Boundary], { ...item });
+
+    const features = HexBoundaryList.map((item: any) => {
+      return polygon([item.hexBoundary], { ...item });
     });
-    return polygonList;
+
+    return featureCollection(features);
   };
 
   useEffect(() => {
@@ -39,12 +43,9 @@ export default () => {
       }),
     });
     scene.on('loaded', () => {
-      const layer = new PolygonLayer({})
-        .source({
-          type: 'FeatureCollection',
-          features: jsontohex(data, 'odCnt'),
-        })
-        .color('cont', [
+      const hexLayer = new PolygonLayer({})
+        .source(JsonToHex(data, 'odCnt', 'fLat', 'fLon'))
+        .color('count', [
           'rgb(253,204,138)',
           'rgb(252,141,89)',
           'rgb(227,74,51)',
@@ -59,10 +60,7 @@ export default () => {
       const lineLayer = new LineLayer({
         zIndex: 2,
       })
-        .source({
-          type: 'FeatureCollection',
-          features: jsontohex(data, 'odCnt'),
-        })
+        .source(JsonToHex(data, 'odCnt', 'fLat', 'fLon'))
         .color('#fff')
         .size(0.8);
 
@@ -78,7 +76,7 @@ export default () => {
         .size(5)
         .color('#0f9960');
 
-      scene.addLayer(layer);
+      scene.addLayer(hexLayer);
       scene.addLayer(lineLayer);
       scene.addLayer(pointLayer);
     });
