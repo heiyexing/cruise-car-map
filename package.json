@@ -45,7 +45,6 @@
   },
   "dependencies": {
     "@antv/l7": "^2.19.9",
-    "@antv/larkmap": "^1.4.6",
     "h3-js": "^4.1.0"
   },
   "devDependencies": {

@@ -10,7 +10,7 @@ title: Hex图层
 
 ### 代码演示
 
-<code src="./demos/default.tsx" compact></code>
+<code src="./demos/default.tsx" compact  defaultShowCode></code>
 
 ```ts
 // json: json数据，hexId：json数据中选取作为分辨率的字段
