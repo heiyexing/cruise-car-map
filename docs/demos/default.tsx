@@ -4,35 +4,33 @@ import { cellToBoundary, latLngToCell } from 'h3-js';
 import React, { useEffect } from 'react';
 import { data } from './mock';
 
-const id = String(Math.random());
+const jsonToHex = (json: any, hexId: string, lat: string, lon: string) => {
+  const hexIndexList = json
+    .map((item: any) => {
+      return {
+        ...item,
+        hexIndex: latLngToCell(+item[lat], +item[lon], +item[hexId]),
+      };
+    })
+    .filter((item: { hexIndex: string }, index: number, arr: any[]) => {
+      return arr.findIndex((t) => t.hexIndex === item.hexIndex) === index;
+    });
+
+  const hexBoundaryList = hexIndexList.map((item: any) => {
+    return { ...item, hexBoundary: cellToBoundary(item.hexIndex, true) };
+  });
+
+  const features = hexBoundaryList.map((item: any) => {
+    return polygon([item.hexBoundary], { ...item });
+  });
+
+  return featureCollection(features);
+};
 
 export default () => {
-  const jsonToHex = (json: any, hexId: string, lat: string, lon: string) => {
-    const hexIndexList = json
-      .map((item: any) => {
-        return {
-          ...item,
-          hexIndex: latLngToCell(+item[lat], +item[lon], +item[hexId]),
-        };
-      })
-      .filter((item: { hexIndex: string }, index: number, arr: any[]) => {
-        return arr.findIndex((t) => t.hexIndex === item.hexIndex) === index;
-      });
-
-    const hexBoundaryList = hexIndexList.map((item: any) => {
-      return { ...item, hexBoundary: cellToBoundary(item.hexIndex, true) };
-    });
-
-    const features = hexBoundaryList.map((item: any) => {
-      return polygon([item.hexBoundary], { ...item });
-    });
-
-    return featureCollection(features);
-  };
-
   useEffect(() => {
     const scene = new Scene({
-      id,
+      id: 'map',
       map: new GaodeMap({
         center: [121.438579, 31.246384],
         pitch: 0,
@@ -82,7 +80,7 @@ export default () => {
 
   return (
     <div>
-      <div id={id} style={{ height: 400, position: 'relative' }} />
+      <div id={'map'} style={{ height: 400, position: 'relative' }} />
     </div>
   );
 };
