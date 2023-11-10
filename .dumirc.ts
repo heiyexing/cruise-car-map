@@ -1,7 +1,7 @@
 import { defineConfig } from 'dumi';
 
 export default defineConfig({
-  outputPath: 'cruise-car-map',
+  outputPath: 'docs-list',
   base: '/cruise-car-map',
   themeConfig: {
     name: 'cruise-car-map',

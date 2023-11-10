@@ -1,6 +1,6 @@
 node_modules
 /dist
-/cruise-car-map
+/docs-list
 .dumi/tmp
 .dumi/tmp-test
 .dumi/tmp-production
