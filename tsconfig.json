@@ -8,9 +8,9 @@
     "baseUrl": "./",
     "paths": {
       "@@/*": [".dumi/tmp/*"],
-      "cruise-car-map": ["src"],
-      "cruise-car-map/*": ["src/*", "*"]
+      "cruise-car-map": ["cruise-car-map"],
+      "cruise-car-map/*": ["cruise-car-map/*", "*"]
     }
   },
-  "include": [".dumirc.ts", "src/**/*"]
+  "include": [".dumirc.ts", "docs/**/*"]
 }
