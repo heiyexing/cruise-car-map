@@ -354,3 +354,66 @@ export const data = [
     count: 25,
   },
 ];
+
+export const markerData = [
+  {
+    fLat: 31.250772,
+    fLon: 121.45259,
+    id: 1,
+    rotation: 0,
+  },
+  {
+    fLat: 31.245249,
+    fLon: 121.457732,
+    id: 2,
+    rotation: 25,
+  },
+  {
+    fLat: 31.251674,
+    fLon: 121.459051,
+    id: 3,
+    rotation: 45,
+  },
+  {
+    fLat: 31.240402,
+    fLon: 121.453249,
+    id: 4,
+    rotation: 45,
+  },
+  {
+    fLat: 31.241867,
+    fLon: 121.466434,
+    id: 5,
+    rotation: 90,
+  },
+  {
+    fLat: 31.237583,
+    fLon: 121.459974,
+    id: 6,
+    rotation: 90,
+  },
+  {
+    fLat: 31.25066,
+    fLon: 121.463666,
+    id: 7,
+    rotation: 180,
+  },
+  {
+    fLat: 31.234088,
+    fLon: 121.469203,
+    id: 8,
+    rotation: 180,
+  },
+  {
+    fLat: 31.241416,
+    fLon: 121.445075,
+    id: 9,
+    rotation: 0,
+  },
+  {
+    fLat: 31.228338,
+    fLon: 121.449162,
+    id: 10,
+    rotation: 45,
+  },
+];
