@@ -17,6 +17,7 @@ export default () => {
         pitch: 0,
         zoom: 10,
         style: 'normal',
+        token: '5ae4492ef912cbbc93034fea0e66ff2a',
       }),
     });
     setScene(scene);
@@ -25,9 +26,11 @@ export default () => {
       const markerLayer = new MarkerLayer({
         cluster: true,
         clusterOption: {
+          // 返回展示元素的 DOM，cars 可能是聚合点数据，也有可能是原始数据
           element: (cars) => {
             const rotation =
               cars.properties.rotation ||
+              // 为聚合点时，rotation 取平均值
               mean(
                 cars.properties.clusterData?.map(
                   (item) => item.properties.rotation,

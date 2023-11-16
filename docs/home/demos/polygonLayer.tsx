@@ -4,6 +4,14 @@ import { cellToBoundary, latLngToCell } from 'h3-js';
 import React, { useEffect } from 'react';
 import { data } from './mock';
 
+/**
+ * 将数据处理成 GeoJSON 格式，如果不需要手动聚合则无视以下函数
+ * @param json
+ * @param hexId
+ * @param lat
+ * @param lon
+ * @returns
+ */
 const jsonToHex = (json: any, hexId: string, lat: string, lon: string) => {
   const hexIndexList = json
     .map((item: any) => {

@@ -24,7 +24,11 @@ export default () => {
         })
         .shape('circle')
         .size(5)
-        .color('#0f9960');
+        .color('#0f9960')
+        .style({
+          strokeWidth: 2,
+          stroke: '#fff',
+        });
       scene.addLayer(pointLayer);
     });
   }, []);

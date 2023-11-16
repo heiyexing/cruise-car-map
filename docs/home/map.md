@@ -41,7 +41,7 @@ const scene = new Scene({
 });
 ```
 
-<code src="./demos/map.tsx"></code>
+<code src="./demos/map.tsx" compact></code>
 
 **<font color=red>token 不添加可能会导致地图底图白屏 控制台报`<AMap JSAPI> KEY 异常，错误信息：INVALID_USER_DOMAIN 错误`</font>**
 
