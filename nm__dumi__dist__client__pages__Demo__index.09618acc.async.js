@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkcruise_car_map=self.webpackChunkcruise_car_map||[]).push([[9],{65149:function(i,a,e){e.r(a),e.d(a,{default:function(){return m}});var n=e(49814),t=e(67294),u=function(){var o=(0,n.UO)(),s=o.id,c=(0,n.WF)(),d=c.demos,f=d[s]||{},r=f.component;return r&&(0,t.createElement)(r)},m=u}}]);
